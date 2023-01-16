@@ -1,139 +1,133 @@
-import java.util.Arrays;
+
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Main {
 
     public static void main(String[] args) 
     {
-        int[] deck1 = new int[52];
-        int[] deck2 = new int[52];
+        ArrayList<Integer> deck = new ArrayList<>();
+        ArrayList<Integer> hand1 = new ArrayList<>();
+        ArrayList<Integer> hand2 = new ArrayList<>();
+        
 
-        deck1 = shuffle(fill(deck1));
-        deck2 = shuffle(fill(deck2));
-        System.out.println(play(deck1,deck2));
+        printdeck(fill(shuffle(deck)));
+        
+
+        //split deck into 2 hands
+
+        //System.out.println(play(hand1, hand2));
     }
 
-    public static int[] fill(int[] deck)
+    public static ArrayList<Integer> fill(ArrayList<Integer> deck)
     {
-        int t = 0;
-
         for(int i = 1; i < 14; i++)
         {
             for(int j = 0; j < 4; j++)
             {
-                deck[t] = i;
-                t++;
+                deck.add(i);
             }
         }
 
         return deck;
     }
 
-    public static int[] shuffle(int[] deck)
+    public static ArrayList<Integer> shuffle(ArrayList<Integer> deck)
     {
         int rand = 0;
         int rand2 = 0;
-        int hold = 0;
         
         for(int i = 0; i < 1000000; i++)
         {
             rand = (int)(Math.random()*52);
             rand2 = (int)(Math.random()*52);
-
-            hold = deck[rand];
-            deck[rand] = deck[rand2];
-            deck[rand2] = hold;
+            Collections.swap(deck, rand, rand2);
         }
-
         return deck;
     }
     
     
-    public static void printdeck(int[] deck)
+    public static void printdeck(ArrayList<Integer> deck)
     {
-        int t = 0;
-
-        for(int i = 0; i < deck.length; i++)
+        for(int i = 0; i < deck.size(); i++)
         {
-            System.out.println(deck[i]);
+            System.out.println(deck.get(i));
         }
     }
 
 
-    public static String play(int[] deck1, int[] deck2)
-        {
-            int count = 0;
-            int last = 0;
+    // public static String play(ArrayList<Integer> hand1, ArrayList<Integer> hand2)
+    //     {
+    //         int count = 0;
+    //         int last = 0;
 
-            while((deck1.length != 0) && (deck2.length != 0))
-            {
-                if(deck1[count] < deck2[count])
-                {
-                    deck2 = Arrays.copyOf(deck2, deck2.length + 1);
-                    deck2[deck2.length-1] = deck1[0];
+    //         while((hand1.length != 0) && (hand2.length != 0))
+    //         {
+    //             if(hand1[count] < hand2[count])
+    //             {
+    //                 hand2 = Arrays.copyOf(hand2, hand2.length + 1);
+    //                 hand2[hand2.length-1] = hand1[0];
 
-                    last = deck1[deck1.length-1];
-                    deck1 = Arrays.copyOf(deck1, deck1.length - 1);
+    //                 last = hand1[hand1.length-1];
+    //                 hand1 = Arrays.copyOf(hand1, hand1.length - 1);
                     
-                    for(int i = 1; i < deck1.length-1; i++)
-                    {
-                        deck1[i-1] = deck1[i]
-                    }
-                    deck1[length-1] = last;
+    //                 for(int i = 1; i < hand1.length-1; i++)
+    //                 {
+    //                     hand1[i-1] = hand1[i];
+    //                 }
+    //                 hand1[hand1.length-1] = last;
 
-                    System.out.println("Deck1 length" + deck1.length + " Deck2 length" + deck2.length);
-                }
+    //                 System.out.println("hand1 length " + hand1.length + " hand2 length " + hand2.length);
+    //             }
                 
-                else if(deck2[count] < deck1[count])
-                {
-                    printdeck(deck1);
-                    System.out.println(" ");
-                    printdeck(deck2);
+    //             else if(hand2[count] < hand1[count])
+    //             {
+    //                 System.out.println(" ");
 
-                    deck1 = Arrays.copyOf(deck1, deck1.length + 1);
-                    deck1[deck1.length-1] = deck2[0];
+    //                 hand1 = Arrays.copyOf(hand1, hand1.length + 1);
+    //                 hand1[hand1.length-1] = hand2[0];
 
-                    last = deck2[deck2.length-1];
-                    deck2 = Arrays.copyOf(deck2, deck2.length - 1);
+    //                 last = hand2[hand2.length-1];
+    //                 hand2 = Arrays.copyOf(hand2, hand2.length - 1);
                     
-                    for(int i = 1; i < deck2.length-1; i++)
-                    {
-                        deck2[i-1] = deck2[i]
-                    }
-                    deck2[length-1] = last;
+    //                 for(int i = 1; i < hand2.length-1; i++)
+    //                 {
+    //                     hand2[i-1] = hand2[i];
+    //                 }
+    //                 hand2[hand2.length-1] = last;
 
-                    System.out.println("Deck1 length" + deck1.length + " Deck2 length" + deck2.length);
-                }
+    //                 System.out.println("hand1 length" + hand1.length + " hand2 length" + hand2.length);
+    //             }
 
-                else
-                {
-                    return "war";
-                    //War(deck1, deck2);
-                }
+    //             else
+    //             {
+    //                 return "war";
+    //                 //War(hand1, hand2);
+    //             }
 
-                count++;
+    //             count++;
                 
-            }
-            return "end";
+    //         }
+    //         return "end";
 
 
-        }
+    //     }
   
   
 
     
 
-//     public static void War(int[] deck1, int[] deck2)
+//     public static void War(int[] hand1, int[] hand2)
 //     {
-//             int[] facedown1 = deck1[0,2]
-//             int[] facedown2 = deck2[0,2]
+//             int[] facedown1 = hand1[0,2]
+//             int[] facedown2 = hand2[0,2]
 
-//             if(deck1[3] > deck2[3])
+//             if(hand1[3] > hand2[3])
 //             {
             
 //             }
 
-//             else if (deck1[3] > deck2[3])
+//             else if (hand1[3] > hand2[3])
 //             {
                 
 //             }
