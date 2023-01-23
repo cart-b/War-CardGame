@@ -2,6 +2,8 @@
 import java.util.ArrayList;
 import java.util.Collections;
 
+import javax.lang.model.util.ElementScanner14;
+
 public class Main {
 
     public static void main(String[] args) 
@@ -11,14 +13,14 @@ public class Main {
         ArrayList<Integer> hand2 = new ArrayList<>();
         
 
-        printdeck(fill(shuffle(deck)));
+        shuffle(fill(deck));
         
+        split(deck, hand1, hand2);
 
-        //split deck into 2 hands
-
-        //System.out.println(play(hand1, hand2));
+        System.out.println(play(hand1, hand2));
     }
 
+        //creates a deck of cards
     public static ArrayList<Integer> fill(ArrayList<Integer> deck)
     {
         for(int i = 1; i < 14; i++)
@@ -32,6 +34,7 @@ public class Main {
         return deck;
     }
 
+        //Shuffles deck
     public static ArrayList<Integer> shuffle(ArrayList<Integer> deck)
     {
         int rand = 0;
@@ -46,7 +49,7 @@ public class Main {
         return deck;
     }
     
-    
+        //prints a deck/arraylist
     public static void printdeck(ArrayList<Integer> deck)
     {
         for(int i = 0; i < deck.size(); i++)
@@ -55,86 +58,97 @@ public class Main {
         }
     }
 
+        //splits a deck into two 26 card hands
+    public static void split(ArrayList<Integer> deck,ArrayList<Integer> hand1,ArrayList<Integer> hand2)
+    {
+        hand1.addAll(deck.subList(0, 26));
+        hand2.addAll(deck.subList(26, 51));
+    }
 
-    // public static String play(ArrayList<Integer> hand1, ArrayList<Integer> hand2)
-    //     {
-    //         int count = 0;
-    //         int last = 0;
+    //war game function
+    public static String play(ArrayList<Integer> hand1, ArrayList<Integer> hand2)
+        {
+            int count = 0;
 
-    //         while((hand1.length != 0) && (hand2.length != 0))
-    //         {
-    //             if(hand1[count] < hand2[count])
-    //             {
-    //                 hand2 = Arrays.copyOf(hand2, hand2.length + 1);
-    //                 hand2[hand2.length-1] = hand1[0];
+            while((hand1.size() != 0) && (hand2.size() != 0))
+            {
 
-    //                 last = hand1[hand1.length-1];
-    //                 hand1 = Arrays.copyOf(hand1, hand1.length - 1);
-                    
-    //                 for(int i = 1; i < hand1.length-1; i++)
-    //                 {
-    //                     hand1[i-1] = hand1[i];
-    //                 }
-    //                 hand1[hand1.length-1] = last;
-
-    //                 System.out.println("hand1 length " + hand1.length + " hand2 length " + hand2.length);
-    //             }
-                
-    //             else if(hand2[count] < hand1[count])
-    //             {
-    //                 System.out.println(" ");
-
-    //                 hand1 = Arrays.copyOf(hand1, hand1.length + 1);
-    //                 hand1[hand1.length-1] = hand2[0];
-
-    //                 last = hand2[hand2.length-1];
-    //                 hand2 = Arrays.copyOf(hand2, hand2.length - 1);
-                    
-    //                 for(int i = 1; i < hand2.length-1; i++)
-    //                 {
-    //                     hand2[i-1] = hand2[i];
-    //                 }
-    //                 hand2[hand2.length-1] = last;
-
-    //                 System.out.println("hand1 length" + hand1.length + " hand2 length" + hand2.length);
-    //             }
-
-    //             else
-    //             {
-    //                 return "war";
-    //                 //War(hand1, hand2);
-    //             }
-
-    //             count++;
-                
-    //         }
-    //         return "end";
+                //scenario 1, hand2 has better card than hand1
+                if(hand1.get(0) < hand2.get(0))
+                {
+                    int element = hand1.get(0);
+                    hand2.add(element);
+                    hand1.remove(0);
+                }
 
 
-    //     }
+
+
+
+                //scenario 1, hand1 has better card than hand2                
+                else if(hand2.get(0) < hand1.get(0))
+                {
+                    int element = hand2.get(0);
+                    hand1.add(element);
+                    hand2.remove(0);
+                }
+
+
+                //scenario 3 hand1 and hand2 cards equal; war
+                else
+                {
+                    War(hand1, hand2);
+                }
+
+                count++;
+                System.out.println(count + " " + hand1.size() + " " +  hand2.size());
+
+                if(count > 1000)
+                {
+                hand1.clear();
+                }
+
+            }
+
+            if(hand1.size() == 0)
+            {
+                return "hand2 wins";
+            }
+            else
+            {
+                return "hand1 wins";
+            }
+
+
+
+        }
   
   
 
     
 
-//     public static void War(int[] hand1, int[] hand2)
-//     {
-//             int[] facedown1 = hand1[0,2]
-//             int[] facedown2 = hand2[0,2]
+    public static void War(ArrayList<Integer> hand1, ArrayList<Integer> hand2)
+    {
+        //hand1 wins war
+            if(hand1.get(4) > hand2.get(4))
+            {
+                hand1.addAll(hand2.subList(0, 4));
 
-//             if(hand1[3] > hand2[3])
-//             {
-            
-//             }
+                for(int i = 0; i < 5; i++)
+                {
+                hand2.remove(i);
+                }
+            }
 
-//             else if (hand1[3] > hand2[3])
-//             {
-                
-//             }
+        //hand2 wins war
+            else if (hand1.get(4) < hand2.get(4))
+            {
+                hand2.addAll(hand1.subList(0, 4));    
 
-//             else
-//             {
-                   
-//             }
-//     }
+                for(int i = 0; i < 5; i++)
+                {
+                hand1.remove(i);
+                }
+            }
+    }
 }
